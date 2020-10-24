@@ -1,17 +1,19 @@
 package com.yagudza.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-public class Roles {
+public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     long id;
     String name;
+
+    @ManyToMany (mappedBy = "roles", fetch = FetchType.LAZY)
+    Set<User> userSet = new HashSet<>();
 
     public long getId() {
         return id;
