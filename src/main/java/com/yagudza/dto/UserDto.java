@@ -1,8 +1,10 @@
 package com.yagudza.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.yagudza.domain.Role;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 public class UserDto {
@@ -10,6 +12,7 @@ public class UserDto {
     private String name;
     private String login;
     private String password;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Set<Role> roles;
 
     public String getName() {
@@ -37,7 +40,7 @@ public class UserDto {
     }
 
     public Set<Role> getRoles() {
-        return roles;
+        return roles == null ? new HashSet<>() : roles;
     }
 
     public void setRoles(Set<Role> roles) {

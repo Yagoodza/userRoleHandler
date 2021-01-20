@@ -1,11 +1,14 @@
 package com.yagudza.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
 @Entity
+
 public class User {
 
     @Column(nullable = false)
@@ -18,17 +21,17 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE}, fetch = FetchType.LAZY)
     @JoinTable(name = "user_role",
             uniqueConstraints = {@UniqueConstraint(columnNames = {"user_login", "role_id"})},
             joinColumns = {@JoinColumn(name = "user_login", referencedColumnName = "login")}
             , inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")
     })
-    private Set<Role> roles;
-//    = new HashSet<>();
+
+    private Set<Role> roles = new HashSet();
 
     public Set<Role> getRoles() {
-        return roles;
+        return roles.isEmpty() ? new HashSet<>() : roles;
     }
 
     public void setRoles(Set<Role> roles) {
@@ -64,8 +67,7 @@ public class User {
         return "User{" +
                 "name='" + name + '\'' +
                 ", login='" + login + '\'' +
-                ", password='" + password + '\'' +
-                ", roles=" + roles +
+                ", password='" + password +
                 '}';
     }
 
@@ -76,12 +78,11 @@ public class User {
         User user = (User) o;
         return Objects.equals(name, user.name) &&
                 Objects.equals(login, user.login) &&
-                Objects.equals(password, user.password)
-                && Objects.equals(roles, user.roles);
+                Objects.equals(password, user.password);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, login, password, roles);
+        return Objects.hash(name, login, password);
     }
 }

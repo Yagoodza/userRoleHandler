@@ -1,16 +1,15 @@
 package com.yagudza.servise;
 
+import com.yagudza.dto.UserResponseDto;
 import com.yagudza.dto.UserDto;
-import com.yagudza.dto.UsersDto;
 import org.springframework.stereotype.Service;
-
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
 
 @Service
 public interface UserService {
 
-    Iterable<UsersDto> findAll();
+    Iterable<UserDto> findAll();
     UserDto findById(String login);
     void deleteById(String login);
+    UserResponseDto createNewUser(UserDto userDto);
+    UserResponseDto updateNewUser(UserDto userDto);
 }

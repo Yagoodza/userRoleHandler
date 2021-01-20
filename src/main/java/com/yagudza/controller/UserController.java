@@ -1,7 +1,7 @@
 package com.yagudza.controller;
 
+import com.yagudza.dto.UserResponseDto;
 import com.yagudza.dto.UserDto;
-import com.yagudza.dto.UsersDto;
 import com.yagudza.servise.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +18,7 @@ public class UserController {
     }
 
     @GetMapping("/showUsers")
-    public ResponseEntity<Iterable<UsersDto>> showUsers() {
+    public ResponseEntity<Iterable<UserDto>> showUsers() {
         return ResponseEntity.ok(userService.findAll());
     }
 
@@ -28,8 +28,13 @@ public class UserController {
     }
 
     @DeleteMapping("/delete/{login}")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteUserByLogin(@PathVariable("login") String login) {
         userService.deleteById(login);
+    }
+
+    @PostMapping("/addUser")
+    public ResponseEntity<UserResponseDto> addUser(@RequestBody UserDto userDto) {
+        return ResponseEntity.ok(userService.createNewUser(userDto));
     }
 }

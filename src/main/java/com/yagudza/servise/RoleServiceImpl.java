@@ -1,4 +1,20 @@
 package com.yagudza.servise;
 
-public class RoleServiceImpl {
+import com.yagudza.domain.Role;
+import com.yagudza.repository.RoleRepository;
+import org.springframework.stereotype.Service;
+
+@Service
+public class RoleServiceImpl implements RoleService{
+
+    private final RoleRepository roleRepository;
+
+    public RoleServiceImpl(RoleRepository roleRepository) {
+        this.roleRepository = roleRepository;
+    }
+
+    @Override
+    public Iterable<Role> findAll(){
+        return roleRepository.findAll();
+    }
 }
